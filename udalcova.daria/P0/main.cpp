@@ -2,6 +2,6 @@
 
 int main()
 {
-  std::cout << "udalcova.daria\n":
+  std::cout << "udalcova.daria\n";
 }
 
