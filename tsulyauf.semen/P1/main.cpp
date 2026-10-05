@@ -1,8 +1,10 @@
-#include <cstddef>
 #include <iostream>
 
 int main()
 {
+  const int code_invalid_input = 1;
+  const int code_too_short_seq = 2;
+
   long long prev = 0, curr = 0;
   std::size_t count = 0, length = 0;
 
@@ -11,7 +13,7 @@ int main()
 
     if (std::cin.bad() || std::cin.fail()) {
       std::cerr << "Invalid argument\n";
-      return 1;
+      return code_invalid_input;
     }
 
     if (curr == 0) {
@@ -28,7 +30,7 @@ int main()
 
   if (length < 2) {
     std::cerr << "Too short\n";
-    return 2;
+    return code_too_short_seq;
   }
 
   std::cout << count << std::endl;
