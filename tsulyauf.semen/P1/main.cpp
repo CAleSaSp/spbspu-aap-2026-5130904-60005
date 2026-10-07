@@ -7,6 +7,7 @@ int main()
   const int code_invalid_input = 1;
   const int code_invalid_calculation = 2;
   const std::size_t required_elements = 2;
+  const long long divisor_minus_one = -1;
   constexpr std::size_t max_count = std::numeric_limits< std::size_t >::max();
 
   long long prev = 0;
@@ -38,7 +39,7 @@ int main()
         second_max = curr;
       }
 
-      if (prev == -1 || curr % prev == 0) {
+      if (prev == divisor_minus_one || curr % prev == 0) {
         if (count == max_count) {
           is_count_overflow = true;
         } else {
