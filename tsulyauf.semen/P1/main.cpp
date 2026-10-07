@@ -59,12 +59,16 @@ int main()
     return code_invalid_calculation;
   }
 
-  std::cout << second_max << "\n";
+  int result = 0;
 
   if (is_count_overflow) {
     std::cerr << "Count overflow\n";
-    return code_invalid_calculation;
+    result = code_invalid_calculation;
+  } else {
+    std::cout << count << '\n';
   }
 
-  std::cout << count << "\n";
+  std::cout << second_max << '\n';
+
+  return result;
 }
