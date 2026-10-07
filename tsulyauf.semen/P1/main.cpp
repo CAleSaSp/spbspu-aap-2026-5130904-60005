@@ -1,19 +1,25 @@
 #include <cstddef>
 #include <iostream>
+#include <limits>
 
 int main()
 {
   const int code_invalid_input = 1;
-  const int code_too_short_seq = 2;
-  const int min_length_of_seq = 2;
+  const int code_invalid_calculation = 2;
+  const std::size_t required_elements = 2;
+  constexpr std::size_t max_count = std::numeric_limits< std::size_t >::max();
 
-  long long prev = 0, curr = 0;
-  std::size_t count = 0, length = 0;
+  long long prev = 0;
+  long long first_max = std::numeric_limits< long long >::min();
+  long long second_max = std::numeric_limits< long long >::min();
+  std::size_t count = 0, seen_elements = 0;
+  bool is_count_overflow = false;
 
   while (true) {
+    long long curr = 0;
     std::cin >> curr;
 
-    if (std::cin.bad() || std::cin.fail()) {
+    if (std::cin.fail()) {
       std::cerr << "Invalid argument\n";
       return code_invalid_input;
     }
@@ -22,18 +28,43 @@ int main()
       break;
     }
 
-    if (length > 0 && curr % prev == 0) {
-      ++count;
+    if (seen_elements == 0) {
+      first_max = curr;
+    } else {
+      if (curr >= first_max) {
+        second_max = first_max;
+        first_max = curr;
+      } else if (curr > second_max) {
+        second_max = curr;
+      }
+
+      if (prev == -1 || curr % prev == 0) {
+        if (count == max_count) {
+          is_count_overflow = true;
+        } else {
+          ++count;
+        }
+      }
     }
 
     prev = curr;
-    ++length;
+
+    if (seen_elements < required_elements) {
+      ++seen_elements;
+    }
   }
 
-  if (length < min_length_of_seq) {
+  if (seen_elements < required_elements) {
     std::cerr << "Too short\n";
-    return code_too_short_seq;
+    return code_invalid_calculation;
   }
 
-  std::cout << count << std::endl;
+  std::cout << second_max << "\n";
+
+  if (is_count_overflow) {
+    std::cerr << "Count overflow\n";
+    return code_invalid_calculation;
+  }
+
+  std::cout << count << "\n";
 }
