@@ -1,19 +1,18 @@
 #include <iostream>
+#include <cstdlib>
 
 namespace usmanov
 {
   void runLab1()
   {
     long long num = 0;
-    long long minElement = 0;
-    long long countMin = 0;
-    bool hasElements = false;
+    long long min_element = 0;
+    long long count_min = 0;
+    bool has_elements = false;
     long long prev1 = 0;
     long long prev2 = 0;
-    long long countLocMin = 0;
-    unsigned long long sequenceLength = 0;
-
-    std::cerr << "Введите числа (0 для конца):\n";
+    long long count_loc_min = 0;
+    unsigned long long sequence_length = 0;
 
     while (std::cin >> num)
     {
@@ -22,28 +21,28 @@ namespace usmanov
         break;
       }
 
-      if (!hasElements)
+      if (!has_elements)
       {
-        minElement = num;
-        countMin = 1;
-        hasElements = true;
+        min_element = num;
+        count_min = 1;
+        has_elements = true;
       }
-      else if (num < minElement)
+      else if (num < min_element)
       {
-        minElement = num;
-        countMin = 1;
+        min_element = num;
+        count_min = 1;
       }
-      else if (num == minElement)
+      else if (num == min_element)
       {
-        countMin++;
+        count_min++;
       }
 
-      sequenceLength++;
-      if (sequenceLength >= 3)
+      sequence_length++;
+      if (sequence_length >= 3)
       {
         if (prev1 < prev2 && prev1 < num)
         {
-          countLocMin++;
+          count_loc_min++;
         }
       }
       prev2 = prev1;
@@ -56,22 +55,22 @@ namespace usmanov
       std::exit(1);
     }
 
-    if (!hasElements)
+    if (!has_elements)
     {
       std::cout << 0 << "\n";
     }
     else
     {
-      std::cout << countMin << "\n";
+      std::cout << count_min << "\n";
     }
 
-    if (sequenceLength == 0)
+    if (sequence_length == 0)
     {
       std::cerr << "Ошибка: Мало элементов.\n";
       std::exit(2);
     }
 
-    std::cout << countLocMin << "\n";
+    std::cout << count_loc_min << "\n";
   }
 }
 
