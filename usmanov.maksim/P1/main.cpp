@@ -5,17 +5,15 @@ namespace usmanov
   void runLab1()
   {
     long long num = 0;
-    
     long long minElement = 0;
     long long countMin = 0;
     bool hasElements = false;
-
     long long prev1 = 0;
     long long prev2 = 0;
     long long countLocMin = 0;
     unsigned long long sequenceLength = 0;
 
-    std::cout << "Введите последовательность чисел (для окончания введите 0):\n";
+    std::cerr << "Введите числа (0 для конца):\n";
 
     while (std::cin >> num)
     {
@@ -54,7 +52,7 @@ namespace usmanov
 
     if (!std::cin.eof() && std::cin.fail())
     {
-      std::cerr << "Ошибка: Некорректные элементы входной последовательности.\n";
+      std::cerr << "Ошибка: Некорректный ввод.\n";
       std::exit(1);
     }
 
@@ -69,10 +67,10 @@ namespace usmanov
 
     if (sequenceLength == 0)
     {
-      std::cerr << "Ошибка: Последовательность слишком короткая для расчета локальных минимумов.\n";
+      std::cerr << "Ошибка: Мало элементов.\n";
       std::exit(2);
     }
-    
+
     std::cout << countLocMin << "\n";
   }
 }
