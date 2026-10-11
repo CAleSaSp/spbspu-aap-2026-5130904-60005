@@ -4,7 +4,7 @@
 namespace demyanov {
 
     int run() {
-        
+
         int a = 0;
         int a_prev = 0;
         int a_prev_2 = 0;
@@ -12,7 +12,7 @@ namespace demyanov {
 
         std::size_t count_max = 0;
         std::size_t count_min = 0;
-    
+
         while(true) {
 
             if(!(std::cin >> a)) {
