@@ -45,7 +45,7 @@ namespace adel
       else if (res.count == 1 || x > res.sub_max)
       {
         res.sub_max = x;
-      }bM
+      }
 
       prev_prev = prev;
       prev = x;
