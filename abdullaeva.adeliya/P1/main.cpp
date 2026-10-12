@@ -6,18 +6,18 @@ namespace adel
   struct Result
   {
     std::size_t count;
-    int subMax;
-    std::size_t locMax;
+    int sub_max;
+    std::size_t loc_max;
   };
 
   bool readSequence(std::istream & in, Result & res)
   {
     res.count = 0;
-    res.subMax = 0;
-    res.locMax = 0;
+    res.sub_max = 0;
+    res.loc_max = 0;
 
     int max = 0;
-    int prevPrev = 0;
+    int prev_prev = 0;
     int prev = 0;
     int x = 0;
 
@@ -28,9 +28,9 @@ namespace adel
         return true;
       }
 
-      if (res.count >= 2 && prev > prevPrev && prev > x)
+      if (res.count >= 2 && prev > prev_prev && prev > x)
       {
-        ++res.locMax;
+        ++res.loc_max;
       }
 
       if (res.count == 0)
@@ -39,15 +39,15 @@ namespace adel
       }
       else if (x > max)
       {
-        res.subMax = max;
+        res.sub_max = max;
         max = x;
       }
-      else if (res.count == 1 || x > res.subMax)
+      else if (res.count == 1 || x > res.sub_max)
       {
-        res.subMax = x;
-      }
+        res.sub_max = x;
+      }bM
 
-      prevPrev = prev;
+      prev_prev = prev;
       prev = x;
       ++res.count;
     }
@@ -73,7 +73,7 @@ int main()
   }
   else
   {
-    std::cout << res.subMax << '\n';
+    std::cout << res.sub_max << '\n';
   }
 
   if (res.count < 1)
@@ -83,7 +83,7 @@ int main()
   }
   else
   {
-    std::cout << res.locMax << '\n';
+    std::cout << res.loc_max << '\n';
   }
 
   return code;
