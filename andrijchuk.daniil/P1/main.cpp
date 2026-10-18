@@ -1,10 +1,10 @@
 #include <iostream>
 #include <stdexcept>
 
-using l_l = long long int;
-
 namespace andrijchuk
 {
+  using l_l = long long int;
+
   void input(l_l &n)
   {
     std::cin >> n;
@@ -14,7 +14,7 @@ namespace andrijchuk
     }
   }
 
-  l_l locMinCnt(l_l n, l_l prev_n, l_l pr_prev_n, l_l count)
+  l_l loc_min_cnt(l_l n, l_l prev_n, l_l pr_prev_n, l_l count)
   {
     if (pr_prev_n > prev_n && prev_n < n)
     {
@@ -23,7 +23,7 @@ namespace andrijchuk
     return count;
   }
 
-  l_l sumDupCnt(l_l n, l_l prev_n, l_l pr_prev_n, l_l count)
+  l_l sum_dup_cnt(l_l n, l_l prev_n, l_l pr_prev_n, l_l count)
   {
     if (n == pr_prev_n + prev_n)
     {
@@ -40,9 +40,9 @@ int main()
   const int inp_err_exitcode1 = 1;
   const int seq_err_exitcode2 = 2;
   bool sumdup_err = false;
-  l_l n = 0, prev_n = 0, pr_prev_n = 0;
-  l_l count_locmin = 0, count_sumdup = 0;
-  l_l k = 0;
+  ad::l_l n = 0, prev_n = 0, pr_prev_n = 0;
+  ad::l_l count_locmin = 0, count_sumdup = 0;
+  ad::l_l k = 0;
   try
   {
     ad::input(n);
@@ -62,8 +62,8 @@ int main()
       k++;
       if (k >= min_arg)
       {
-        count_locmin = ad::locMinCnt(n, prev_n, pr_prev_n, count_locmin);
-        count_sumdup = ad::sumDupCnt(n, prev_n, pr_prev_n, count_sumdup);
+        count_locmin = ad::loc_min_cnt(n, prev_n, pr_prev_n, count_locmin);
+        count_sumdup = ad::sum_dup_cnt(n, prev_n, pr_prev_n, count_sumdup);
       }
       pr_prev_n = prev_n;
       prev_n = n;
