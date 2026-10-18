@@ -11,11 +11,11 @@ namespace udalcova {
 		int b = 0;
 
 		if (!(cin >> a)) {
-			return 0;
+			return 1;
 		}
 
 		if (a == 0) {
-			return 1;
+			return 0;
 		}
 
 		total = 1;
@@ -24,10 +24,6 @@ namespace udalcova {
 
 		while (cin >> next && next != 0) {
 			++total;
-
-			if (next > a) {
-				++count;
-			}
 
 			if (next > a) {
 				++count;
@@ -60,20 +56,15 @@ int main() {
 		return 1;
 	}
 
-	int result = 0;
 
-	if (total < 3) {
-		std::cerr << "Error: Невозможно вычислить количество локальных максимумов\n";
-		result = 2;
 
-		if (total >= 2) {
-			std::cout << count << '\n';
-		}
-	}
-	else {
-		std::cout << count << '\n';
-		std::cout << max << '\n';
+	if (total == 0) {
+		std::cerr << "Error: Последовательность пуста\n";
+		return 2;
 	}
 
-	return result;
+	std::cout << count << '\n';
+	std::cout << max << '\n';
+
+	return 0;
 }
