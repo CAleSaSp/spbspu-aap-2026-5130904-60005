@@ -1,8 +1,16 @@
 #include <cstddef>
 #include <iostream>
 
-namespace adel
+namespace abdullaeva
 {
+  const int ERR_INVALID_INPUT = 1;
+  const int ERR_TOO_SHORT = 2;
+
+  const std::size_t MIN_COUNT_SUB_MAX = 2;
+  const std::size_t MIN_COUNT_LOC_MAX = 1;
+  const std::size_t MIN_COUNT_FOR_LOC_CHECK = 2;
+  const std::size_t SECOND_ELEMENT_COUNT = 1;
+
   struct Result
   {
     std::size_t count;
@@ -28,7 +36,7 @@ namespace adel
         return true;
       }
 
-      if (res.count >= 2 && prev > prev_prev && prev > x)
+      if (res.count >= MIN_COUNT_FOR_LOC_CHECK && prev > prev_prev && prev > x)
       {
         ++res.loc_max;
       }
@@ -42,7 +50,7 @@ namespace adel
         res.sub_max = max;
         max = x;
       }
-      else if (res.count == 1 || x > res.sub_max)
+      else if (res.count == SECOND_ELEMENT_COUNT || x > res.sub_max)
       {
         res.sub_max = x;
       }
@@ -57,29 +65,29 @@ namespace adel
 
 int main()
 {
-  adel::Result res;
-  if (!adel::readSequence(std::cin, res))
+  abdullaeva::Result res;
+  if (!abdullaeva::readSequence(std::cin, res))
   {
     std::cerr << "Error: input is not a valid sequence\n";
-    return 1;
+    return abdullaeva::ERR_INVALID_INPUT;
   }
 
   int code = 0;
 
-  if (res.count < 2)
+  if (res.count < abdullaeva::MIN_COUNT_SUB_MAX)
   {
     std::cerr << "Error: sequence is too short for SUB-MAX\n";
-    code = 2;
+    code = abdullaeva::ERR_TOO_SHORT;
   }
   else
   {
     std::cout << res.sub_max << '\n';
   }
 
-  if (res.count < 1)
+  if (res.count < abdullaeva::MIN_COUNT_LOC_MAX)
   {
     std::cerr << "Error: sequence is too short for LOC-MAX\n";
-    code = 2;
+    code = abdullaeva::ERR_TOO_SHORT;
   }
   else
   {
