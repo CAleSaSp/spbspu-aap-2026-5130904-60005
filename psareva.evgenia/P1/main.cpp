@@ -13,7 +13,6 @@ int main()
   std::size_t count_zd3 = 0;
   std::size_t length_zd5 = 0;
   std::size_t length_zd5_max = 0;
-  std::cin >> number;
   if (!(std::cin >> number)) {
     std::cerr << "Incorrect input" << std::endl;
     return incorrect_input;
@@ -36,7 +35,6 @@ int main()
     if (length_zd5 > length_zd5_max) {
       length_zd5_max = length_zd5;
     }
-    std::cin >> number;
     if (!(std::cin >> number)) {
       std::cerr << "Incorrect input" << std::endl;
       return incorrect_input;
