@@ -1,7 +1,8 @@
 #include <cstddef>
 #include <iostream>
 
-int main() {
+int main()
+{
   int n = 1, previous = 0, before_previous = 0;
   std::size_t count = 0, ans_for_15 = 0, ans_for_6 = 0, current_length_6 = 1;
   const std::size_t first_element = 1;
@@ -26,8 +27,7 @@ int main() {
       }
     }
     if (count > second_element) {
-      if (static_cast<long long>(n) ==
-          static_cast<long long>(previous) + before_previous) {
+      if (static_cast< long long >(n) == static_cast< long long >(previous) + before_previous) {
         ans_for_15 += 1;
       }
     }
