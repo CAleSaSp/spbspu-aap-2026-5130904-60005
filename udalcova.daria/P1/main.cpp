@@ -18,7 +18,7 @@ namespace udalcova {
     }
 
     total = 1;
-    bool hasPrev = 0;
+    bool has_prev = 0;
     int next = 0;
 
     while (cin >> next && next != 0) {
@@ -28,13 +28,13 @@ namespace udalcova {
         ++count;
       }
 
-      if (hasPrev && a > b && a > next) {
+      if (has_prev && a > b && a > next) {
         ++max;
       }
 
       b = a;
       a = next;
-      hasPrev = 1;
+      has_prev = 1;
     }
 
     if (!cin.eof() && cin.fail()) {
