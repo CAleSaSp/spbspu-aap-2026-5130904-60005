@@ -74,7 +74,7 @@ int printResults(const Stats &s, std::ostream &out, std::ostream &err) {
 
   return result;
 }
-} // namespace uzun
+}
 
 int main() {
   uzun::Stats stats = {0, 0, 0, 0};
