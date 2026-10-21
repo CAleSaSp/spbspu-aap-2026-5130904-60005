@@ -1,56 +1,63 @@
 #include <iostream>
-#include <algorithm>
 #include <stdexcept>
+
+namespace komova {
+  int max(int x, int y)
+  {
+    if (x > y) {
+      return x;
+    }
+    return y;
+  }
+}
 
 int main()
 {
   const int invalid_argument_error = 2;
+  const int runtime_error = 1;
   int res = 1;
-  int k = 1;
-  int k2 = 0;
-  int a = 0;
-  int b = 0;
+  int count_povt = 1;
+  int res2 = 0;
+  int el1 = 0;
+  int el2 = 0;
   try {
-    std::cin >> a;
-    if (std::cin.fail()) {
+    if (not(std::cin >> el1)) {
       throw std::runtime_error("Input error");
     }
-    if (a == 0) {
+    if (el1 == 0) {
       std::cout << 0 << "\n";
       throw std::invalid_argument("Sequence is too short");
     }
-    std::cin >> b;
-    if (std::cin.fail()) {
+    if (not(std::cin >> el2)) {
       throw std::runtime_error("Input error");
     }
-    if (b == 0) {
+    if (el2 == 0) {
       std::cout << 1 << "\n";
       throw std::invalid_argument("Sequence is too short");
     }
-    while (b != 0) {
-      if (a == b) {
-        k++;
+    while (el2 != 0) {
+      if (el1 == el2) {
+        count_povt++;
       } else {
-        res = std::max(k, res);
-        k = 1;
+        res = komova::max(count_povt, res);
+        count_povt = 1;
       }
-      if (b % a == 0) {
-        k2++;
+      if (el2 % el1 == 0) {
+        res2++;
       }
-      a = b;
-      std::cin >> b;
-      if (std::cin.fail()) {
+      el1 = el2;
+      if (not(std::cin >> el2)) {
         throw std::runtime_error("Input error");
       }
     }
-    res = std::max(k, res);
+    res = komova::max(count_povt, res);
   } catch (const std::invalid_argument& e) {
     std::cerr << e.what() << '\n';
     return invalid_argument_error;
   } catch (const std::runtime_error& e) {
     std::cerr << e.what() << '\n';
-    return 1;
+    return runtime_error;
   }
-  std::cout << res << "\n" << k2 << "\n";
+  std::cout << res << "\n" << res2 << "\n";
   return 0;
 }
