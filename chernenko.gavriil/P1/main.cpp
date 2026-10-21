@@ -33,7 +33,7 @@ int main()
     }
     prev_n = n;
     i++;
-  }  
+  }
   if (!std::cin) {
     std::cerr << "Incorrect input" << std::endl;
     return exit_code_incorrect_input;
