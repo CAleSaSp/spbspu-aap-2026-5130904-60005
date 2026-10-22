@@ -16,19 +16,8 @@ int main()
   std::size_t count = 0, seen_elements = 0;
   bool is_count_overflow = false;
 
-  while (true) {
-    long long curr = 0;
-    std::cin >> curr;
-
-    if (std::cin.fail()) {
-      std::cerr << "Invalid argument\n";
-      return code_invalid_input;
-    }
-
-    if (curr == 0) {
-      break;
-    }
-
+  long long curr = 0;
+  while (std::cin >> curr && curr != 0) {
     if (seen_elements == 0) {
       first_max = curr;
     } else {
@@ -53,6 +42,11 @@ int main()
     if (seen_elements < required_elements) {
       ++seen_elements;
     }
+  }
+
+  if (!std::cin) {
+    std::cerr << "Invalid argument\n";
+    return code_invalid_input;
   }
 
   if (seen_elements < required_elements) {
