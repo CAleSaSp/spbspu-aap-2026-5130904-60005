@@ -1,6 +1,10 @@
 #include <iostream>
 #include <cstddef>
 namespace udalcova {
+
+  const int error_input = 1;
+  const int error_empty = 2;
+
   bool con(std::istream & cin, std::size_t & count, std::size_t & max, std::size_t & total)
   {
     max = 0;
@@ -10,15 +14,15 @@ namespace udalcova {
     int b = 0;
 
     if (!(cin >> a)) {
-      return 1;
+      return false;
     }
 
     if (a == 0) {
-      return 0;
+      return true;
     }
 
     total = 1;
-    bool has_prev = 0;
+    bool has_prev = false;
     int next = 0;
 
     while (cin >> next && next != 0) {
@@ -34,13 +38,13 @@ namespace udalcova {
 
       b = a;
       a = next;
-      has_prev = 1;
+      has_prev = true;
     }
 
-    if (!cin.eof() && cin.fail()) {
-      return 0;
+    if (cin.fail()) {
+      return false;
     }
-    return 1;
+    return true;
   }
 }
 
@@ -52,12 +56,12 @@ int main()
 
   if (!udalcova::con(std::cin, count, max, total)) {
     std::cerr << "Error: Ввод не является корректной последовательность\n";
-    return 1;
+    return udalcova.error_input;
   }
 
   if (total == 0) {
     std::cerr << "Error: Последовательность пуста\n";
-    return 2;
+    return error_empty;
   }
 
   std::cout << count << '\n';
