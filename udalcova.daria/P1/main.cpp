@@ -56,12 +56,12 @@ int main()
 
   if (!udalcova::con(std::cin, count, max, total)) {
     std::cerr << "Error: Ввод не является корректной последовательность\n";
-    return udalcova.error_input;
+    return udalcova::error_input;
   }
 
   if (total == 0) {
     std::cerr << "Error: Последовательность пуста\n";
-    return error_empty;
+    return udalcova::error_empty;
   }
 
   std::cout << count << '\n';
