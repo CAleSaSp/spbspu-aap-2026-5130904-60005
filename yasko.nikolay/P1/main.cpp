@@ -38,7 +38,7 @@ int main()
       {
         if (first == second)
         {
-          if (eql_c == std::numeric_limits< unsigned long long int >::max())
+          if (eql_c == std::numeric_limits<unsigned long long int>::max())
           {
             flag_err_eql_seq = true;
           }
@@ -64,7 +64,7 @@ int main()
       {
         if (first < second && second > third)
         {
-          if (count == std::numeric_limits< unsigned long long int >::max())
+          if (count == std::numeric_limits<unsigned long long int>::max())
           {
             flag_err_loc_max = true;
           }
@@ -87,26 +87,24 @@ int main()
   {
     eql_max = eql_c;
   }
-  if (!flag_err_eql_seq && !flag_err_loc_max)
+  if (!flag_err_eql_seq)
   {
     std::cout << "[EQL-SEQ] = " << eql_max << std::endl;
-    std::cout << "[LOC-MAX] = " << count << std::endl;
-  }
-  else if (!flag_err_loc_max)
-  {
-    std::cout << "[LOC-MAX] = " << count << std::endl;
-    std::cerr << "Overflow in counter [EQL-SEQ]" << std::endl;
-    return calculation_error;
-  }
-  else if (!flag_err_eql_seq)
-  {
-    std::cout << "[EQL-SEQ] = " << eql_max << std::endl;
-    std::cerr << "Overflow in counter [LOC-MAX]" << std::endl;
-    return calculation_error;
   }
   else
   {
-    std::cerr << "Overflow in counter [EQL-SEQ] and [LOC-MAX]" << std::endl;
+    std::cerr << "Overflow in counter [EQL-SEQ]" << std::endl;
+  }
+  if (!flag_err_loc_max)
+  {
+    std::cout << "[LOC-MAX] = " << count << std::endl;
+  }
+  else
+  {
+    std::cerr << "Overflow in counter [LOC-MAX]" << std::endl;
+  }
+  if (flag_err_eql_seq || flag_err_loc_max)
+  {
     return calculation_error;
   }
   return success;
