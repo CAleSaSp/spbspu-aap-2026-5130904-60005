@@ -58,13 +58,13 @@ int main()
     std::cerr << "Error: Ввод не является корректной последовательность\n";
     return udalcova::error_input;
   }
+  std::cout << count << '\n';
 
   if (total == 0) {
     std::cerr << "Error: Последовательность пуста\n";
     return udalcova::error_empty;
   }
 
-  std::cout << count << '\n';
   std::cout << max << '\n';
 
   return 0;
