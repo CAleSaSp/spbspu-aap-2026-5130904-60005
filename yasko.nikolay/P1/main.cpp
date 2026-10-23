@@ -38,7 +38,7 @@ int main()
       {
         if (first == second)
         {
-          if (eql_c == std::numeric_limits<unsigned long long int>::max())
+          if (eql_c == std::numeric_limits< unsigned long long int >::max())
           {
             flag_err_eql_seq = true;
           }
@@ -64,7 +64,7 @@ int main()
       {
         if (first < second && second > third)
         {
-          if (count == std::numeric_limits<unsigned long long int>::max())
+          if (count == std::numeric_limits< unsigned long long int >::max())
           {
             flag_err_loc_max = true;
           }
