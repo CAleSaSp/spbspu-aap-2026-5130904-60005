@@ -18,7 +18,7 @@ int main()
 {
   const int code_invalid_input = 1;
   const int code_calculation_error = 2;
-  unsigned long long initial_len = 1;
+  const unsigned long long initial_len = 1;
   const long long even_divisor = 2;
 
   long long current = 0;
