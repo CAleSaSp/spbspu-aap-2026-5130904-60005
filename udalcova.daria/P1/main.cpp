@@ -60,12 +60,13 @@ int main()
   }
   std::cout << count << '\n';
 
+  int result = 0;
+
   if (total == 0) {
     std::cerr << "Error: Последовательность пуста\n";
-    return udalcova::error_empty;
+    result = udalcova::error_empty;
+  } else {
+    std::cout << max << '\n';
   }
-
-  std::cout << max << '\n';
-
-  return 0;
+  return result;
 }
