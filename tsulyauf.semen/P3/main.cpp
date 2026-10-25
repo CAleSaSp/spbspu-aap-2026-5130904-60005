@@ -145,65 +145,66 @@ namespace tsulyauf {
     output << nsm << "\n";
     return 0;
   }
+}
 
-  int main(int argc, char** argv)
-  {
-    if (argc != tsulyauf::args_count) {
-      std::cerr << "Ошибка: Неверное количество параметров функции\n";
-      return tsulyauf::invalid_args_code;
-    }
-
-    int num = 0;
-    if (!tsulyauf::parseTaskNum(argv[tsulyauf::task_arg_index], num)) {
-      std::cerr << "Ошибка: Неверный первый параметр\n";
-      return tsulyauf::invalid_args_code;
-    }
-
-    std::ifstream input(argv[tsulyauf::input_arg_index]);
-    if (!input) {
-      std::cerr << "Ошибка открытия входного файла\n";
-      return tsulyauf::internal_error_code;
-    }
-
-    std::size_t rows = 0, columns = 0;
-    if (!tsulyauf::readSize(input, rows, columns)) {
-      std::cerr << "Ошибка чтения размеров матрицы\n";
-      return tsulyauf::internal_error_code;
-    }
-
-    if (columns != 0 && rows > (std::numeric_limits< std::size_t >::max() / columns)) {
-      std::cerr << "Ошибка: слишком большие размеры матрицы\n";
-      return tsulyauf::internal_error_code;
-    }
-
-    const std::size_t count = rows * columns;
-
-    std::ofstream output(argv[tsulyauf::output_arg_index]);
-    if (!output) {
-      std::cerr << "Ошибка открытия выходного файла\n";
-      return tsulyauf::internal_error_code;
-    }
-
-    if (num == tsulyauf::fixed_array_task) {
-      if (count > tsulyauf::max_fixed_size) {
-        std::cerr << "Ошибка: матрица не помещается в массив фиксированного размера\n";
-        return tsulyauf::internal_error_code;
-      }
-
-      int data[tsulyauf::max_fixed_size] = {};
-      return tsulyauf::process(data, rows, columns, input, output);
-    }
-
-    int* data = nullptr;
-
-    try {
-      data = new int[count];
-    } catch (const std::bad_alloc&) {
-      std::cerr << "Ошибка выделения памяти\n";
-      return tsulyauf::internal_error_code;
-    }
-
-    const int result = tsulyauf::process(data, rows, columns, input, output);
-    delete[] data;
-    return result;
+int main(int argc, char** argv)
+{
+  if (argc != tsulyauf::args_count) {
+    std::cerr << "Ошибка: Неверное количество параметров функции\n";
+    return tsulyauf::invalid_args_code;
   }
+
+  int num = 0;
+  if (!tsulyauf::parseTaskNum(argv[tsulyauf::task_arg_index], num)) {
+    std::cerr << "Ошибка: Неверный первый параметр\n";
+    return tsulyauf::invalid_args_code;
+  }
+
+  std::ifstream input(argv[tsulyauf::input_arg_index]);
+  if (!input) {
+    std::cerr << "Ошибка открытия входного файла\n";
+    return tsulyauf::internal_error_code;
+  }
+
+  std::size_t rows = 0, columns = 0;
+  if (!tsulyauf::readSize(input, rows, columns)) {
+    std::cerr << "Ошибка чтения размеров матрицы\n";
+    return tsulyauf::internal_error_code;
+  }
+
+  if (columns != 0 && rows > (std::numeric_limits< std::size_t >::max() / columns)) {
+    std::cerr << "Ошибка: слишком большие размеры матрицы\n";
+    return tsulyauf::internal_error_code;
+  }
+
+  const std::size_t count = rows * columns;
+
+  std::ofstream output(argv[tsulyauf::output_arg_index]);
+  if (!output) {
+    std::cerr << "Ошибка открытия выходного файла\n";
+    return tsulyauf::internal_error_code;
+  }
+
+  if (num == tsulyauf::fixed_array_task) {
+    if (count > tsulyauf::max_fixed_size) {
+      std::cerr << "Ошибка: матрица не помещается в массив фиксированного размера\n";
+      return tsulyauf::internal_error_code;
+    }
+
+    int data[tsulyauf::max_fixed_size] = {};
+    return tsulyauf::process(data, rows, columns, input, output);
+  }
+
+  int* data = nullptr;
+
+  try {
+    data = new int[count];
+  } catch (const std::bad_alloc&) {
+    std::cerr << "Ошибка выделения памяти\n";
+    return tsulyauf::internal_error_code;
+  }
+
+  const int result = tsulyauf::process(data, rows, columns, input, output);
+  delete[] data;
+  return result;
+}
