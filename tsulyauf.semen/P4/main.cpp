@@ -11,6 +11,8 @@ namespace tsulyauf {
 
   const int memory_error_code = 1;
   const char* const memory_error_message = "Memory allocation error!\n";
+  const int input_error_code = 1;
+  const char* const input_error_message = "Input error!\n";
 
   char* expandBuffer(char* old_buffer, std::size_t& capacity);
   char* readString(std::istream& input, std::size_t& length);
@@ -100,6 +102,12 @@ int main()
   if (buffer == nullptr) {
     std::cerr << tsulyauf::memory_error_message;
     return tsulyauf::memory_error_code;
+  }
+
+  if (length == 0 && !std::cin) {
+    std::cerr << tsulyauf::input_error_message;
+    std::free(buffer);
+    return tsulyauf::input_error_code;
   }
 
   std::cout << tsulyauf::hasRepeatedSymbols(buffer) << "\n";
