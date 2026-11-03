@@ -26,7 +26,7 @@ char* tsulyauf::expandBuffer(char* old_buffer, std::size_t& capacity)
     return nullptr;
   }
 
-  char* new_buffer = static_cast< char* >(std::malloc(capacity * growth_factor));
+  char* const new_buffer = static_cast< char* >(std::malloc(capacity * growth_factor));
   if (new_buffer == nullptr) {
     return nullptr;
   }
@@ -53,7 +53,7 @@ char* tsulyauf::readString(std::istream& input, std::size_t& length)
 
   while (input.get(symbol) && symbol != '\n') {
     if (length == capacity - 1) {
-      char* expanded_buffer = expandBuffer(buffer, capacity);
+      char* const expanded_buffer = expandBuffer(buffer, capacity);
       if (expanded_buffer == nullptr) {
         std::free(buffer);
         return nullptr;
@@ -98,7 +98,7 @@ char* tsulyauf::removeDigits(const char* data, char* result) noexcept
 int main()
 {
   std::size_t length = 0;
-  char* buffer = tsulyauf::readString(std::cin, length);
+  char* const buffer = tsulyauf::readString(std::cin, length);
   if (buffer == nullptr) {
     std::cerr << tsulyauf::memory_error_message;
     return tsulyauf::memory_error_code;
@@ -112,7 +112,7 @@ int main()
 
   std::cout << tsulyauf::hasRepeatedSymbols(buffer) << "\n";
 
-  char* new_buffer = static_cast< char* >(std::malloc(length + 1));
+  char* const new_buffer = static_cast< char* >(std::malloc(length + 1));
   if (new_buffer == nullptr) {
     std::cerr << tsulyauf::memory_error_message;
     std::free(buffer);
