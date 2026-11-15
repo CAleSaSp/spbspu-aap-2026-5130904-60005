@@ -146,6 +146,20 @@ namespace shcherbakov
     return true;
   }
 
+  bool processAndOutput(std::istream & input, std::ostream & output, int * matrix, std::size_t rows, std::size_t cols)
+  {
+    const std::size_t count = rows * cols;
+    if (!readElements(input, matrix, count))
+    {
+      return false;
+    }
+    const std::size_t saddle_count = countSaddlePoints(matrix, rows, cols);
+    const std::size_t loc_max_count = countLocalMax(matrix, rows, cols);
+    output << saddle_count << "\n";
+    output << loc_max_count << "\n";
+    return true;
+  }
+
   int processMatrix(int mode, std::istream & input, std::ostream & output)
   {
     std::size_t rows = 0;
@@ -164,15 +178,11 @@ namespace shcherbakov
         return error_data;
       }
       int static_buffer[fixed_capacity];
-      if (!readElements(input, static_buffer, count))
+      if (!processAndOutput(input, output, static_buffer, rows, cols))
       {
         std::cerr << "Invalid matrix elements\n";
         return error_data;
       }
-      const std::size_t saddle_count = countSaddlePoints(static_buffer, rows, cols);
-      const std::size_t loc_max_count = countLocalMax(static_buffer, rows, cols);
-      output << saddle_count << "\n";
-      output << loc_max_count << "\n";
       return 0;
     }
     int * const dynamic_buffer = new (std::nothrow) int[count];
@@ -181,17 +191,13 @@ namespace shcherbakov
       std::cerr << "Memory allocation failed\n";
       return error_data;
     }
-    if (!readElements(input, dynamic_buffer, count))
+    const bool is_processed = processAndOutput(input, output, dynamic_buffer, rows, cols);
+    delete[] dynamic_buffer;
+    if (!is_processed)
     {
-      delete[] dynamic_buffer;
       std::cerr << "Invalid matrix elements\n";
       return error_data;
     }
-    const std::size_t saddle_count = countSaddlePoints(dynamic_buffer, rows, cols);
-    const std::size_t loc_max_count = countLocalMax(dynamic_buffer, rows, cols);
-    delete[] dynamic_buffer;
-    output << saddle_count << "\n";
-    output << loc_max_count << "\n";
     return 0;
   }
 }
