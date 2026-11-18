@@ -9,6 +9,7 @@ namespace uzun {
   const int data_error_code = 2;
   const int fixed_mode = 1;
   const int dynamic_mode = 2;
+	const int expected_argc = 4;
   const std::size_t fixed_capacity = 10000;
 
   bool parseMode(const char * text, int & mode)
@@ -54,6 +55,12 @@ namespace uzun {
       }
     }
     return true;
+  }
+
+   bool isEndOfInput(std::istream & input)
+  {
+    char extra = 0;
+    return !(input >> extra);
   }
 
   bool writeMatrix(std::ostream & output, const int * data, std::size_t rows, std::size_t cols)
@@ -167,8 +174,8 @@ namespace uzun {
 
   int readAndProcess(int * data, std::size_t rows, std::size_t cols, std::istream & input, std::ostream & output)
   {
-    if (!readElements(input, data, rows * cols)) {
-      std::cerr << "Invalid matrix elements\n";
+    if (!readElements(input, data, rows * cols) || !isEndOfInput(input)) {
+      std::cerr << "Invalid matrix data\n";
       return data_error_code;
     }
     return process(data, rows, cols, output);
@@ -206,7 +213,7 @@ namespace uzun {
 
 int main(int argc, char ** argv)
 {
-  if (argc != 4) {
+  if (argc != uzun::expected_argc) {
     std::cerr << "Usage: ./lab num input output\n";
     return uzun::arguments_error_code;
   }
