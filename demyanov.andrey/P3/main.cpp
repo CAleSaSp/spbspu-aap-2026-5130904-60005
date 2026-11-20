@@ -1,3 +1,4 @@
+
 #include <fstream>
 #include <iostream>
 
@@ -7,23 +8,24 @@ namespace demyanov {
   const int ARGS_COUNT = 4;
   const int MAX_SIZE = 10000;
 
-  bool readMatrix(std::istream& input, int* data, int rows, int cols)
+  bool readMatrix(std::istream& input, int* data, size_t rows, size_t cols)
   {
-    for (int i = 0; i < rows * cols; ++i) {
+    for (size_t i = 0; i < rows * cols; ++i) {
       if (!(input >> data[i])) {
         return false;
       }
     }
-    return true;
+    input >> std::ws;
+    return input.eof();
   }
 
-  int findRowWithLongestRun(const int* data, int rows, int cols)
+  int findRowWithLongestRun(const int* data, size_t rows, size_t cols)
   {
     int best_row = 0;
-    int best_len = 0;
-    for (int i = 0; i < rows; ++i) {
-      int len = 0;
-      for (int j = 0; j < cols; ++j) {
+    size_t best_len = 0;
+    for (size_t i = 0; i < rows; ++i) {
+      size_t len = 0;
+      for (size_t j = 0; j < cols; ++j) {
         if (j > 0 && data[i * cols + j] == data[i * cols + j - 1]) {
           ++len;
         } else {
@@ -77,16 +79,16 @@ namespace demyanov {
     }
   }
 
-  void writeMatrix(std::ostream& output, const int* data, int rows, int cols)
+  void writeMatrix(std::ostream& output, const int* data, size_t rows, size_t cols)
   {
     output << rows << " " << cols;
-    for (int i = 0; i < rows * cols; ++i) {
+    for (size_t i = 0; i < rows * cols; ++i) {
       output << " " << data[i];
     }
     output << "\n";
   }
 
-  void solveMatrix(std::ostream& output, int* data, int rows, int cols)
+  void solveMatrix(std::ostream& output, int* data, size_t rows, size_t cols)
   {
     const int row = findRowWithLongestRun(data, rows, cols);
     spiral(data, rows, cols);
@@ -119,9 +121,11 @@ namespace demyanov {
       return ERR_ARGS;
     }
 
-    int rows = 0;
-    int cols = 0;
-    if (!(input >> rows >> cols) || rows < 0 || cols < 0) {
+    size_t rows = 0;
+    size_t cols = 0;
+    if (!(input >> rows >> cols) ||
+        rows > MAX_SIZE || cols > MAX_SIZE ||
+        (rows != 0 && cols > MAX_SIZE / rows)) {
       std::cerr << "Error: bad matrix size" << "\n";
       return ERR_MATRIX;
     }
