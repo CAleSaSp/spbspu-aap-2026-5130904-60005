@@ -7,9 +7,9 @@
 
 namespace yasko
 {
-  const long long min_long_long = std::numeric_limits<long long>::min();
-  const long long max_long_long = std::numeric_limits<long long>::max();
-  const size_t max_size_t = std::numeric_limits<size_t>::max();
+  const long long min_long_long = std::numeric_limits< long long >::min();
+  const long long max_long_long = std::numeric_limits< long long >::max();
+  const size_t max_size_t = std::numeric_limits< size_t >::max();
   const size_t max_elements = 10000;
   const int number_of_arguments = 4;
   bool sumOverflowInt(long long a, long long b)
@@ -68,8 +68,8 @@ namespace yasko
     {
       throw std::invalid_argument("");
     }
-    row = static_cast<size_t>(rows_i);
-    cols = static_cast<size_t>(cols_i);
+    row = static_cast< size_t >(rows_i);
+    cols = static_cast< size_t >(cols_i);
   }
   void matrixInput(int *arr, size_t rows, size_t cols, std::istream &input)
   {
