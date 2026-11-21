@@ -132,6 +132,7 @@ namespace denisevich {
 }
 int main(int argc, char** argv)
 {
+  const std::size_t array_size = 10000;
   const int invalid_input = 1;
   const int all_good = 0;
   const int incorrect_content = 2;
@@ -198,9 +199,12 @@ int main(int argc, char** argv)
     output << all_good << '\n' << all_good;
     return all_good;
   }
+  if (mode[0] == mode1 && lines * columns > array_size) {
+    std::cerr << "Too much" << '\n';
+    return invalid_input;
+  }
   try {
     int* data = denisevich::allocateArray(mode, lines, columns);
-    const std::size_t array_size = 10000;
     int array[array_size] = {};
     if (data == nullptr) {
       data = array;
