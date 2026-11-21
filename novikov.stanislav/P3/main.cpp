@@ -10,11 +10,8 @@ namespace novikov
   const int fixed_mode = 1;
   const int dynamic_mode = 2;
   const int expected_arguments = 4;
-  const int radix = 10;
   const long long unit = 1;
   const std::size_t size_unit = 1;
-  const long long plus_sign = 1;
-  const long long minus_sign = -1;
   const char first_digit = '0';
   const char last_digit = '9';
 
@@ -38,6 +35,16 @@ namespace novikov
     return true;
   }
 
+  static bool safeAdd(std::size_t first, std::size_t second, std::size_t& result)
+  {
+    if (first > (std::numeric_limits< std::size_t >::max() - second))
+    {
+      return false;
+    }
+    result = first + second;
+    return true;
+  }
+
   static bool safeSub(long long first, long long second, long long& result)
   {
     const long long max_value = std::numeric_limits< long long >::max();
@@ -54,58 +61,7 @@ namespace novikov
     return true;
   }
 
-  static bool safeMul(long long first, long long second, long long& result)
-  {
-    const long long max_value = std::numeric_limits< long long >::max();
-    const long long min_value = std::numeric_limits< long long >::min();
-    if ((first == 0) || (second == 0))
-    {
-      result = 0;
-      return true;
-    }
-    if (first > 0)
-    {
-      if (second > 0)
-      {
-        if (first > (max_value / second))
-        {
-          return false;
-        }
-      }
-      else if (second < (min_value / first))
-      {
-        return false;
-      }
-    }
-    else
-    {
-      if (second > 0)
-      {
-        if (first < (min_value / second))
-        {
-          return false;
-        }
-      }
-      else if (first < (max_value / second))
-      {
-        return false;
-      }
-    }
-    result = first * second;
-    return true;
-  }
-
-  static bool safeAddSize(std::size_t first, std::size_t second, std::size_t& result)
-  {
-    if (first > (std::numeric_limits< std::size_t >::max() - second))
-    {
-      return false;
-    }
-    result = first + second;
-    return true;
-  }
-
-  static bool safeSubSize(std::size_t first, std::size_t second, std::size_t& result)
+  static bool safeSub(std::size_t first, std::size_t second, std::size_t& result)
   {
     if (first < second)
     {
@@ -115,7 +71,7 @@ namespace novikov
     return true;
   }
 
-  static bool safeMulSize(std::size_t first, std::size_t second, std::size_t& result)
+  static bool safeMul(std::size_t first, std::size_t second, std::size_t& result)
   {
     if ((first != 0) && (second > (std::numeric_limits< std::size_t >::max() / first)))
     {
@@ -127,35 +83,11 @@ namespace novikov
 
   static bool parseNumber(const char* text, int& result)
   {
-    const bool has_sign = (text[0] == '-') || (text[0] == '+');
-    const long long sign = (text[0] == '-') ? minus_sign : plus_sign;
-    std::size_t index = has_sign ? size_unit : 0;
-    if ((text[index] < first_digit) || (text[index] > last_digit))
+    if ((text[0] < first_digit) || (text[0] > last_digit) || (text[1] != '\0'))
     {
       return false;
     }
-    long long value = 0;
-    while ((text[index] >= first_digit) && (text[index] <= last_digit))
-    {
-      const long long digit = sign * (text[index] - first_digit);
-      if (!safeMul(value, radix, value) || !safeAdd(value, digit, value))
-      {
-        return false;
-      }
-      if (!safeAddSize(index, size_unit, index))
-      {
-        return false;
-      }
-    }
-    if (text[index] != '\0')
-    {
-      return false;
-    }
-    if ((value < std::numeric_limits< int >::min()) || (value > std::numeric_limits< int >::max()))
-    {
-      return false;
-    }
-    result = static_cast< int >(value);
+    result = text[0] - first_digit;
     return true;
   }
 
@@ -185,7 +117,7 @@ namespace novikov
       {
         return false;
       }
-      if (!safeAddSize(index, size_unit, index))
+      if (!safeAdd(index, size_unit, index))
       {
         return false;
       }
@@ -197,11 +129,11 @@ namespace novikov
   static bool elementIndex(std::size_t row, std::size_t col, std::size_t cols, std::size_t& index)
   {
     std::size_t shift = 0;
-    if (!safeMulSize(row, cols, shift))
+    if (!safeMul(row, cols, shift))
     {
       return false;
     }
-    if (!safeAddSize(shift, col, index))
+    if (!safeAdd(shift, col, index))
     {
       return false;
     }
@@ -224,12 +156,12 @@ namespace novikov
       {
         return true;
       }
-      if (!safeAddSize(row, size_unit, row) || !safeAddSize(col, size_unit, col))
+      if (!safeAdd(row, size_unit, row) || !safeAdd(col, size_unit, col))
       {
         return false;
       }
     }
-    if (!safeAddSize(count, size_unit, count))
+    if (!safeAdd(count, size_unit, count))
     {
       return false;
     }
@@ -250,7 +182,7 @@ namespace novikov
       {
         return false;
       }
-      if (!safeAddSize(row, size_unit, row))
+      if (!safeAdd(row, size_unit, row))
       {
         return false;
       }
@@ -263,7 +195,7 @@ namespace novikov
       {
         return false;
       }
-      if (!safeAddSize(col, size_unit, col))
+      if (!safeAdd(col, size_unit, col))
       {
         return false;
       }
@@ -308,7 +240,7 @@ namespace novikov
       std::size_t row = bottom;
       while (row > top)
       {
-        if (!safeSubSize(row, size_unit, row))
+        if (!safeSub(row, size_unit, row))
         {
           return false;
         }
@@ -317,7 +249,7 @@ namespace novikov
           return false;
         }
       }
-      if (!safeAddSize(left, size_unit, left))
+      if (!safeAdd(left, size_unit, left))
       {
         return false;
       }
@@ -333,12 +265,12 @@ namespace novikov
         {
           return false;
         }
-        if (!safeAddSize(col, size_unit, col))
+        if (!safeAdd(col, size_unit, col))
         {
           return false;
         }
       }
-      if (!safeAddSize(top, size_unit, top))
+      if (!safeAdd(top, size_unit, top))
       {
         return false;
       }
@@ -347,7 +279,7 @@ namespace novikov
         break;
       }
 
-      if (!safeSubSize(right, size_unit, right))
+      if (!safeSub(right, size_unit, right))
       {
         return false;
       }
@@ -358,7 +290,7 @@ namespace novikov
         {
           return false;
         }
-        if (!safeAddSize(row, size_unit, row))
+        if (!safeAdd(row, size_unit, row))
         {
           return false;
         }
@@ -368,14 +300,14 @@ namespace novikov
         break;
       }
 
-      if (!safeSubSize(bottom, size_unit, bottom))
+      if (!safeSub(bottom, size_unit, bottom))
       {
         return false;
       }
       col = right;
       while (col > left)
       {
-        if (!safeSubSize(col, size_unit, col))
+        if (!safeSub(col, size_unit, col))
         {
           return false;
         }
@@ -396,7 +328,7 @@ namespace novikov
     while (index < count)
     {
       output << ' ' << matrix[index];
-      if (!safeAddSize(index, size_unit, index))
+      if (!safeAdd(index, size_unit, index))
       {
         return false;
       }
@@ -460,7 +392,7 @@ namespace novikov
     }
 
     std::size_t count = 0;
-    const bool fits = safeMulSize(rows, cols, count);
+    const bool fits = safeMul(rows, cols, count);
 
     if (mode == fixed_mode)
     {
