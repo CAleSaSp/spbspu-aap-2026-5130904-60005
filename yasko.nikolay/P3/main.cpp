@@ -5,12 +5,13 @@
 #include <cstddef>
 #include <new>
 
-const long long min_long_long = std::numeric_limits< long long >::min();
-const long long max_long_long = std::numeric_limits< long long >::max();
-const size_t max_size_t = std::numeric_limits< size_t >::max();
-const size_t max_elements = 10000;
 namespace yasko
 {
+  const long long min_long_long = std::numeric_limits<long long>::min();
+  const long long max_long_long = std::numeric_limits<long long>::max();
+  const size_t max_size_t = std::numeric_limits<size_t>::max();
+  const size_t max_elements = 10000;
+  const int number_of_arguments = 4;
   bool sumOverflowInt(long long a, long long b)
   {
     if (b > 0 && a > max_long_long - b)
@@ -33,12 +34,12 @@ namespace yasko
   }
   bool check(int argc, char **argv, int &mode)
   {
-    if (argc > 4)
+    if (argc > number_of_arguments)
     {
       std::cerr << "Too many arguments\n";
       return false;
     }
-    if (argc < 4)
+    if (argc < number_of_arguments)
     {
       std::cerr << "Not enough arguments\n";
       return false;
@@ -56,24 +57,8 @@ namespace yasko
       }
       return true;
     }
-    bool digits = (first[0] != '\0');
-    for (size_t i = 0; first[i] != '\0'; i++)
-    {
-      if (first[i] < '0' || first[i] > '9')
-      {
-        digits = false;
-      }
-    }
-    if (digits)
-    {
-      std::cerr << "First parameter is out of range\n";
-      return false;
-    }
-    else
-    {
-      std::cerr << "First parameter is not a number\n";
-      return false;
-    }
+    std::cerr << "First parametr must be 1 or 2\n";
+    return false;
   }
   void readSize(std::istream &input, size_t &row, size_t &cols)
   {
@@ -83,8 +68,8 @@ namespace yasko
     {
       throw std::invalid_argument("");
     }
-    row = static_cast< size_t >(rows_i);
-    cols = static_cast< size_t >(cols_i);
+    row = static_cast<size_t>(rows_i);
+    cols = static_cast<size_t>(cols_i);
   }
   void matrixInput(int *arr, size_t rows, size_t cols, std::istream &input)
   {
@@ -194,8 +179,6 @@ int main(int argc, char **argv)
 {
   const int input_arguments_ex1 = 1;
   const int input_values_ex2 = 2;
-  const int other_errors_ex3 = 3;
-  int matrix_stack[max_elements] = {};
   int *matrix_free_store = nullptr;
   int mode = 0;
   if (!yasko::check(argc, argv, mode))
@@ -229,10 +212,11 @@ int main(int argc, char **argv)
     size_t side = 0;
     if (mode == 1)
     {
-      if (rows * cols > max_elements)
+      if (rows * cols > yasko::max_elements)
       {
         throw std::invalid_argument("Too many elements");
       }
+      int matrix_stack[yasko::max_elements] = {};
       yasko::matrixInput(matrix_stack, rows, cols, input);
       side = yasko::matrToSq(matrix_stack, rows, cols);
       flag = yasko::result(matrix_stack, side, output);
@@ -255,18 +239,18 @@ int main(int argc, char **argv)
   catch (const std::bad_alloc &e)
   {
     std::cerr << "Bad alloc\n";
-    return other_errors_ex3;
+    return input_values_ex2;
   }
   catch (std::overflow_error &e)
   {
     std::cerr << "Overflow error\n";
     delete[] matrix_free_store;
-    return other_errors_ex3;
+    return input_values_ex2;
   }
   delete[] matrix_free_store;
   if (!flag)
   {
-    return other_errors_ex3;
+    return input_values_ex2;
   }
   return 0;
 }
