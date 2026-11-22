@@ -9,7 +9,7 @@ namespace uzun {
   const int data_error_code = 2;
   const int fixed_mode = 1;
   const int dynamic_mode = 2;
-	const int expected_argc = 4;
+  const int expected_argc = 4;
   const std::size_t fixed_capacity = 10000;
 
   bool parseMode(const char * text, int & mode)
@@ -57,7 +57,7 @@ namespace uzun {
     return true;
   }
 
-   bool isEndOfInput(std::istream & input)
+  bool isEndOfInput(std::istream & input)
   {
     char extra = 0;
     return !(input >> extra);
