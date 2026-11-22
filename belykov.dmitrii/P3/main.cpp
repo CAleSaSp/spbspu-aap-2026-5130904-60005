@@ -107,7 +107,7 @@ namespace belykov {
 
   int runDynamic(std::istream& input, std::ostream& output, size_t rows, size_t cols, size_t total)
   {
-    int* matrix = new (std::nothrow) int[total];
+    int* const matrix = new (std::nothrow) int[total];
     if (matrix == nullptr) {
       std::cerr << "Error: Memory allocation failed.\n";
       return input_error_code;
