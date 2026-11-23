@@ -105,7 +105,7 @@ namespace tsulyauf {
     }
 
     char extra = 0;
-    return !(input >> extra);
+    return !(input >> extra) && input.eof();
   }
 
   void printMatrix(std::ostream& output, const int* data, const std::size_t rows, const std::size_t columns)
@@ -147,7 +147,7 @@ namespace tsulyauf {
     output << nsm << "\n";
     return 0;
   }
-}
+} // namespace tsulyauf
 
 int main(int argc, char** argv)
 {
