@@ -4,8 +4,7 @@
 #include <new>
 #include <cstddef>
 
-namespace denisevich
-{
+namespace denisevich {
   const std::size_t array_size = 10000;
 
   std::size_t getMin(std::size_t n, std::size_t m)
@@ -127,7 +126,7 @@ namespace denisevich
     return prev_total;
   }
 
-  void ReadMatrix(std::istream& input, int* data, std::size_t count)
+  void readMatrix(std::istream& input, int* data, std::size_t count)
   {
     int skipped = 0;
     input.clear();
@@ -146,17 +145,17 @@ namespace denisevich
     return output.good();
   }
 
-  bool Stackprocessing(std::ostream& output, std::istream& input, std::size_t rows, std::size_t cols)
+  bool stackprocessing(std::ostream& output, std::istream& input, std::size_t rows, std::size_t cols)
   {
     int array[array_size] = {};
-    ReadMatrix(input, array, rows * cols);
+    readMatrix(input, array, rows * cols);
     return writeResults(output, array, cols, rows);
   }
 
-  bool Heapprocessing(std::ostream& output, std::istream& input, std::size_t rows, std::size_t cols)
+  bool heapprocessing(std::ostream& output, std::istream& input, std::size_t rows, std::size_t cols)
   {
-    int* data = new int[cols * rows];
-    ReadMatrix(input, data, rows * cols);
+    const int* data = new int[cols * rows];
+    readMatrix(input, data, rows * cols);
     const bool is_written = writeResults(output, data, cols, rows);
     delete[] data;
     return is_written;
@@ -238,9 +237,9 @@ int main(int argc, char** argv)
   try {
     bool is_written = false;
     if (mode[0] == mode2) {
-      is_written = denisevich::Heapprocessing(output, input, lines, columns);
+      is_written = denisevich::heapprocessing(output, input, lines, columns);
     } else {
-      is_written = denisevich::Stackprocessing(output, input, lines, columns);
+      is_written = denisevich::stackprocessing(output, input, lines, columns);
     }
     if (!is_written) {
       std::cerr << "Targeted file error" << '\n';
