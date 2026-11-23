@@ -43,7 +43,7 @@ namespace denisevich {
 
   long long int findMaxDiagSum(const int* data, std::size_t n, std::size_t m)
   {
-    if (n * m <= 1) {
+    if (n <= 1 || m <= 1) {
       return 0;
     }
     long long int total = 0;
@@ -193,34 +193,26 @@ int main(int argc, char** argv)
     return invalid_input;
   }
   int cursor = 0;
+  long long rows_in = 0;
+  long long cols_in = 0;
+  if (!(input >> rows_in >> cols_in) || rows_in < 0 || cols_in < 0) {
+    std::cerr << "Incorrect content" << '\n';
+    return incorrect_content;
+  }
+  const std::size_t lines = static_cast< std::size_t >(rows_in);
+  const std::size_t columns = static_cast< std::size_t >(cols_in);
+  if (columns != 0 && lines > std::numeric_limits< std::size_t >::max() / columns) {
+    std::cerr << "Incorrect content" << '\n';
+    return incorrect_content;
+  }
   std::size_t quantity = 0;
-  std::size_t lines = 0;
-  std::size_t columns = 0;
   while (input >> cursor) {
-    if (quantity < 1) {
-      if (cursor < 0) {
-        std::cerr << "Wrong size" << '\n';
-        return incorrect_content;
-      }
-      lines = cursor;
-    } else if (quantity == 1) {
-      if (cursor < 0) {
-        std::cerr << "Wrong size" << '\n';
-        return incorrect_content;
-      }
-      columns = cursor;
-    }
-    quantity++;
+    ++quantity;
   }
   if (!input.eof()) {
     std::cerr << "Incorrect content" << '\n';
     return incorrect_content;
   }
-  if (quantity < 2) {
-    std::cerr << "Incorrect content" << '\n';
-    return incorrect_content;
-  }
-  quantity -= 2;
   if (quantity != lines * columns) {
     std::cerr << "Incorrect content" << '\n';
     return incorrect_content;
