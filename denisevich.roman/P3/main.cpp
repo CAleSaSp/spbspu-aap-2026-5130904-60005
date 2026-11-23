@@ -126,7 +126,7 @@ namespace denisevich {
     return prev_total;
   }
 
-  void readMatrix(std::istream& input, int* data, std::size_t count)
+  void readMatrix(std::istream& input, const int* data, std::size_t count)
   {
     int skipped = 0;
     input.clear();
