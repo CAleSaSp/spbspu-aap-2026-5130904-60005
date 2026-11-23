@@ -225,7 +225,6 @@ int main(int argc, char **argv)
     {
       throw std::overflow_error("");
     }
-    size_t side = 0;
     if (mode == yasko::mode_static)
     {
       if (rows * cols > yasko::max_elements)
