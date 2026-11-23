@@ -147,7 +147,7 @@ namespace tsulyauf {
     output << nsm << "\n";
     return 0;
   }
-} // namespace tsulyauf
+}
 
 int main(int argc, char** argv)
 {
