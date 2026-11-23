@@ -123,7 +123,8 @@ namespace novikov
       }
     }
     char extra = 0;
-    return !(input >> extra);
+    input >> extra;
+    return input.eof();
   }
 
   static bool elementIndex(std::size_t row, std::size_t col, std::size_t cols, std::size_t& index)
