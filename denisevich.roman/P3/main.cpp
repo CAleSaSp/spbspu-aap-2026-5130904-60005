@@ -3,16 +3,11 @@
 #include <limits>
 #include <new>
 #include <cstddef>
-namespace denisevich {
-  int* allocateArray(const char* mode, const std::size_t n, const std::size_t m)
-  {
-    int* back = nullptr;
-    const char mode_2 = '2';
-    if (mode[0] == mode_2) {
-      back = new int[n * m];
-    }
-    return back;
-  }
+
+namespace denisevich
+{
+  const std::size_t array_size = 10000;
+
   std::size_t getMin(std::size_t n, std::size_t m)
   {
     std::size_t back = 0;
@@ -23,6 +18,7 @@ namespace denisevich {
     }
     return back;
   }
+
   std::size_t countLocalMin(const int* data, std::size_t n, std::size_t m)
   {
     std::size_t enumerator = 0;
@@ -42,6 +38,7 @@ namespace denisevich {
     }
     return enumerator;
   }
+
   long long int findMaxDiagSum(const int* data, std::size_t n, std::size_t m)
   {
     long long int total = 0;
@@ -129,10 +126,45 @@ namespace denisevich {
     }
     return prev_total;
   }
+
+  void ReadMatrix(std::istream& input, int* data, std::size_t count)
+  {
+    int skipped = 0;
+    input.clear();
+    input.seekg(0);
+    input >> skipped >> skipped;
+    for (std::size_t i = 0; i < count; ++i) {
+      input >> data[i];
+    }
+  }
+
+  bool writeResults(std::ostream& output, const int* data, std::size_t cols, std::size_t rows)
+  {
+    const long long max_sum = findMaxDiagSum(data, rows, cols);
+    const std::size_t localmin = countLocalMin(data, rows, cols);
+    output << max_sum << '\n' << localmin << '\n';
+    return output.good();
+  }
+
+  bool Stackprocessing(std::ostream& output, std::istream& input, std::size_t rows, std::size_t cols)
+  {
+    int array[array_size] = {};
+    ReadMatrix(input, array, rows * cols);
+    return writeResults(output, array, cols, rows);
+  }
+
+  bool Heapprocessing(std::ostream& output, std::istream& input, std::size_t rows, std::size_t cols)
+  {
+    int* data = new int[cols * rows];
+    ReadMatrix(input, data, rows * cols);
+    const bool is_written = writeResults(output, data, cols, rows);
+    delete[] data;
+    return is_written;
+  }
 }
+
 int main(int argc, char** argv)
 {
-  const std::size_t array_size = 10000;
   const int invalid_input = 1;
   const int all_good = 0;
   const int incorrect_content = 2;
@@ -199,34 +231,18 @@ int main(int argc, char** argv)
     output << all_good << '\n' << all_good;
     return all_good;
   }
-  if (mode[0] == mode1 && lines * columns > array_size) {
+  if (mode[0] == mode1 && lines * columns > denisevich::array_size) {
     std::cerr << "Too much" << '\n';
     return invalid_input;
   }
   try {
-    int* data = denisevich::allocateArray(mode, lines, columns);
-    int array[array_size] = {};
-    if (data == nullptr) {
-      data = array;
-    }
-    input.clear();
-    input.seekg(0);
-    long long skip = 0;
-    input >> skip >> skip;
-    for (std::size_t i = 0; i < quantity; i++) {
-      input >> data[i];
-    }
-    const std::size_t result_2 = denisevich::countLocalMin(data, lines, columns);
-    const long long result_14 = denisevich::findMaxDiagSum(data, lines, columns);
+    bool is_written = false;
     if (mode[0] == mode2) {
-      delete[] data;
+      is_written = denisevich::Heapprocessing(output, input, lines, columns);
+    } else {
+      is_written = denisevich::Stackprocessing(output, input, lines, columns);
     }
-    if (!(output << result_14)) {
-      std::cerr << "Targeted file error" << '\n';
-      return incorrect_content;
-    }
-    output << '\n';
-    if (!(output << result_2)) {
+    if (!is_written) {
       std::cerr << "Targeted file error" << '\n';
       return incorrect_content;
     }
