@@ -31,7 +31,7 @@ namespace chernenko {
   int min(int a, int b);
   std::size_t min(std::size_t a, std::size_t b);
   void add(int&, int);
-} // namespace chernenko
+}
 
 int main(int argc, char** argv)
 {
