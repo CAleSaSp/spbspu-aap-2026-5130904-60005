@@ -20,6 +20,9 @@ namespace denisevich {
 
   std::size_t countLocalMin(const int* data, std::size_t n, std::size_t m)
   {
+    if (n < 3 || m < 3) {
+      return 0;
+    }
     std::size_t enumerator = 0;
     for (std::size_t str = 1; str < n - 1; str++) {
       for (std::size_t pillar = 2; pillar < m; pillar++) {
@@ -40,6 +43,9 @@ namespace denisevich {
 
   long long int findMaxDiagSum(const int* data, std::size_t n, std::size_t m)
   {
+    if (n * m <= 1) {
+      return 0;
+    }
     long long int total = 0;
     long long int prev_total = std::numeric_limits< long long >::min();
     long long int first = static_cast< long long >(n) - static_cast< long long >(m);
@@ -231,10 +237,6 @@ int main(int argc, char** argv)
   if (!output) {
     std::cerr << "Wrong targeted file" << '\n';
     return invalid_input;
-  }
-  if (quantity == 0 || (lines == 1 && columns == 1)) {
-    output << all_good << '\n' << all_good << '\n';
-    return all_good;
   }
   try {
     bool is_written = false;
