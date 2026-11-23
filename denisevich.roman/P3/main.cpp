@@ -126,7 +126,7 @@ namespace denisevich {
     return prev_total;
   }
 
-  void readMatrix(std::istream& input, const int* data, std::size_t count)
+  void readMatrix(std::istream& input, int* data, std::size_t count)
   {
     int skipped = 0;
     input.clear();
@@ -154,7 +154,7 @@ namespace denisevich {
 
   bool heapprocessing(std::ostream& output, std::istream& input, std::size_t rows, std::size_t cols)
   {
-    const int* data = new int[cols * rows];
+    int* data = new int[cols * rows];
     readMatrix(input, data, rows * cols);
     const bool is_written = writeResults(output, data, cols, rows);
     delete[] data;
@@ -206,19 +206,11 @@ int main(int argc, char** argv)
     }
     quantity++;
   }
-  if (!input.eof()) {
+    if (!input.eof()) {
     std::cerr << "Incorrect content" << '\n';
     return incorrect_content;
   }
-  std::ofstream output{output_path};
-  if (!output) {
-    std::cerr << "Wrong targeted file" << '\n';
-    return invalid_input;
-  }
-  if (quantity == 2 && (lines == 0 && columns == 0)) {
-    output << all_good << '\n' << all_good;
-    return all_good;
-  } else if (quantity <= 2) {
+  if (quantity < 2) {
     std::cerr << "Incorrect content" << '\n';
     return incorrect_content;
   }
@@ -226,13 +218,23 @@ int main(int argc, char** argv)
   if (quantity != lines * columns) {
     std::cerr << "Incorrect content" << '\n';
     return incorrect_content;
-  } else if (lines == 1 && columns == 1) {
-    output << all_good << '\n' << all_good;
-    return all_good;
+  }
+  if (quantity == 0 && (lines != 0 || columns != 0)) {
+    std::cerr << "Incorrect content" << '\n';
+    return incorrect_content;
   }
   if (mode[0] == mode1 && lines * columns > denisevich::array_size) {
     std::cerr << "Too much" << '\n';
     return invalid_input;
+  }
+  std::ofstream output{output_path};
+  if (!output) {
+    std::cerr << "Wrong targeted file" << '\n';
+    return invalid_input;
+  }
+  if (quantity == 0 || (lines == 1 && columns == 1)) {
+    output << all_good << '\n' << all_good << '\n';
+    return all_good;
   }
   try {
     bool is_written = false;
