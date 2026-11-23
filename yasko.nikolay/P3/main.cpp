@@ -12,6 +12,8 @@ namespace yasko
   const size_t max_size_t = std::numeric_limits< size_t >::max();
   const size_t max_elements = 10000;
   const int number_of_arguments = 4;
+  const int mode_static = 1;
+  const int mode_dynamic = 2;
   bool sumOverflowInt(long long a, long long b)
   {
     if (b > 0 && a > max_long_long - b)
@@ -49,11 +51,11 @@ namespace yasko
     {
       if (first[0] == '1')
       {
-        mode = 1;
+        mode = mode_static;
       }
       else
       {
-        mode = 2;
+        mode = mode_dynamic;
       }
       return true;
     }
@@ -80,6 +82,12 @@ namespace yasko
       {
         throw std::invalid_argument("");
       }
+    }
+    char end = 0;
+    input >> end;
+    if (!input.eof())
+    {
+      throw std::invalid_argument("garbage at the end of the file");
     }
   }
   size_t matrToSq(int *arr, size_t rows, size_t cols)
@@ -157,15 +165,15 @@ namespace yasko
   {
     if (upTriangleMatr(arr, side))
     {
-      output << "[UPP-TRI-MTX] = true\n";
+      output << "true\n";
     }
     else
     {
-      output << "[UPP-TRI-MTX] = false\n";
+      output << "false\n";
     }
     try
     {
-      output << "[MAX-SUM-SDG] = " << maxSumDiag(arr, side) << "\n";
+      output << maxSumDiag(arr, side) << "\n";
     }
     catch (const std::overflow_error &e)
     {
@@ -174,7 +182,15 @@ namespace yasko
     }
     return true;
   }
+  void execution(int *matrix, size_t rows, size_t cols, std::istream &input, std::ostream &output, bool &flag)
+  {
+    size_t side = 0;
+    matrixInput(matrix, rows, cols, input);
+    side = matrToSq(matrix, rows, cols);
+    flag = result(matrix, side, output);
+  }
 }
+
 int main(int argc, char **argv)
 {
   const int input_arguments_ex1 = 1;
@@ -210,24 +226,19 @@ int main(int argc, char **argv)
       throw std::overflow_error("");
     }
     size_t side = 0;
-    if (mode == 1)
+    if (mode == yasko::mode_static)
     {
       if (rows * cols > yasko::max_elements)
       {
         throw std::invalid_argument("Too many elements");
       }
       int matrix_stack[yasko::max_elements] = {};
-      yasko::matrixInput(matrix_stack, rows, cols, input);
-      side = yasko::matrToSq(matrix_stack, rows, cols);
-      flag = yasko::result(matrix_stack, side, output);
+      yasko::execution(matrix_stack, rows, cols, input, output, flag);
     }
     else
     {
       matrix_free_store = new int[rows * cols];
-      yasko::matrixInput(matrix_free_store, rows, cols, input);
-
-      side = yasko::matrToSq(matrix_free_store, rows, cols);
-      flag = yasko::result(matrix_free_store, side, output);
+      yasko::execution(matrix_free_store, rows, cols, input, output, flag);
     }
   }
   catch (const std::invalid_argument &e)
