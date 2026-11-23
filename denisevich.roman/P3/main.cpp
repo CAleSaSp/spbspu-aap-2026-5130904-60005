@@ -154,7 +154,7 @@ namespace denisevich {
 
   bool heapprocessing(std::ostream& output, std::istream& input, std::size_t rows, std::size_t cols)
   {
-    const int* data = new int[cols * rows];
+    int* const data = new int[cols * rows];
     readMatrix(input, data, rows * cols);
     const bool is_written = writeResults(output, data, cols, rows);
     delete[] data;
