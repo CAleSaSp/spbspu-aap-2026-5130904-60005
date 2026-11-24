@@ -6,7 +6,7 @@ namespace demyanov {
   const int ERR_ARGS = 1;
   const int ERR_MATRIX = 2;
   const int ARGS_COUNT = 4;
-  const int MAX_SIZE = 10000;
+  const size_t MAX_SIZE = 10000;
 
   bool readMatrix(std::istream &input, int *data, size_t rows, size_t cols)
   {
@@ -21,7 +21,7 @@ namespace demyanov {
 
   int findRowWithLongestRun(const int *data, size_t rows, size_t cols)
   {
-    int best_row = 0;
+    size_t best_row = 0;
     size_t best_len = 0;
     for (size_t i = 0; i < rows; ++i) {
       size_t len = 0;
