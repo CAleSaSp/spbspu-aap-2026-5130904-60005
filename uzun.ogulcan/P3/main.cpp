@@ -59,8 +59,11 @@ namespace uzun {
 
   bool isEndOfInput(std::istream & input)
   {
-    char extra = 0;
-    return !(input >> extra);
+    int extra = 0;
+    if (input >> extra) {
+      return false;
+    }
+    return input.eof();
   }
 
   bool writeMatrix(std::ostream & output, const int * data, std::size_t rows, std::size_t cols)
