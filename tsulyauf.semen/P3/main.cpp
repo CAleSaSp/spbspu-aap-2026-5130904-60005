@@ -103,7 +103,9 @@ namespace tsulyauf {
         return false;
       }
     }
-    return true;
+
+    char extra = 0;
+    return !(input >> extra) && input.eof();
   }
 
   void printMatrix(std::ostream& output, const int* data, const std::size_t rows, const std::size_t columns)
